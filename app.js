@@ -2,7 +2,7 @@
 require('dotenv').config();
 
 // Import of modules.
-const { get, default: axios } = require('axios');
+const { get } = require('axios');
 const { Client, Intents } = require('discord.js');
 const { existsSync, writeFileSync, readFileSync } = require('fs');
 
@@ -20,7 +20,8 @@ async function fetchTweets() {
     };
 
     try {
-        const res = await get('https://api.twitter.com/2/tweets/search/recent?query=from:DOFUSfr&max_results=100&tweet.fields=in_reply_to_user_id', { headers });
+        const query = 'from:DOFUSfr -is:retweet -is:reply';
+        const res = await get(`https://api.twitter.com/2/tweets/search/recent?query=${encodeURIComponent(query)}&max_results=100`, { headers });
         const tweets = res.data.data.filter(tweet => !tweet.in_reply_to_user_id).reverse();
 
         for (const tweet of tweets) {
