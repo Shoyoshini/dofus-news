@@ -22,7 +22,7 @@ async function fetchTweets() {
     try {
         const query = 'from:DOFUSfr -is:retweet -is:reply';
         const res = await get(`https://api.twitter.com/2/tweets/search/recent?query=${encodeURIComponent(query)}&max_results=100`, { headers });
-        const tweets = res.data.data.filter(tweet => !tweet.in_reply_to_user_id).reverse();
+        const tweets = res.data.data.reverse();
 
         for (const tweet of tweets) {
             if (tweetsSent.includes(tweet.id)) continue;
